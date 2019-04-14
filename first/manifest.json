@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "My Cool Extension",
+  "version": "0.1",
+  "permissions": [
+         "storage"
+       ],
+  "content_scripts": [
+  {
+    "matches": [
+      "<all_urls>"
+    ],
+    "css": ["main.css"],
+    "js": ["jquery-3.4.0.js","content.js"]
+  }
+],
+"browser_action": {
+  "default_icon": "d.png"
+},
+"background": {
+  "scripts": ["background.js"]
+}
+}
