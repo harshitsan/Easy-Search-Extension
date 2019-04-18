@@ -1,11 +1,32 @@
-let div = document.createElement("div");
+
+let div = document.createElement("div");//div to render
 div.id = "suggestion-div";
 div.style.display="none";
-let input = document.getElementsByTagName('input');
+let input = document.querySelectorAll('input');//nodelist of inputs on page
 
-function addParaInDiv(value,afterElement){
+document.addEventListener("click", function(event){//to hide div when clicked on page
+let found = false;
+input.forEach(function(e){
+  if(e==event.target)
+  found = true;
+})
+if(found)
+  return;
+else
+  div.style.display = div.style.display=="block"?"none":"none";
+
+});
+function removeElement()
+{
+  console.log("remove");
+}
+function addParaInDiv(value,afterElement){//insert Elements in div
   let insideDiv = document.createElement("div");
+  // let link = document.createElement("a");
+  // link.textContent="X";
+  // link.onclick = removeElement();
   insideDiv.textContent = value;
+  // insideDiv.append(link);
   div.append(insideDiv);
   insideDiv.addEventListener("click",function(){
     afterElement.value = insideDiv.textContent;
@@ -21,6 +42,7 @@ if(input){
       while (div.firstChild) {
         div.removeChild(div.firstChild);
       }
+      console.log(this.value);
       this.after(div);
       div.style.display="block";
       chrome.storage.sync.get(['value'], function(e) {
