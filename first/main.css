@@ -1,26 +1,39 @@
 body{
   /* background-color: red; */
 }
-#suggestion-div{
+#hb-suggestion-div{
+  width: 100%;
   position: relative;
   z-index: 999;
   background-color: white;
   border: 1px solid grey;
   border-radius: 0px 0px 20px 20px;
   cursor: pointer;
-  height:50vh;
+  max-height:50vh;
   overflow-y: scroll;
 }
-#suggestion-div div{
-  padding: 0px 5px;
+#hb-suggestion-div div div{
+  display: inline-block;
+}
+#hb-data{
+  padding: 1px 0px 1px 0px;
   margin: 2px 10px;
+  width: 90%;
   font-size: 1.3em;
   font-weight: bold;
 }
-#suggestion-div div:hover{
-  background-color: red;
-
+#hb-data:hover{
+  background-color: #EDEDED;
 }
-#suggestion-div div a{
-  float: right;
+#hb-remove{
+  padding: 1px 5px;
+  color: red;
+  /* margin: */
+}
+#hb-remove:hover{
+  font-weight: bold;
+  font-size: 1.3em;
+}
+#hb-remove a{
+text-decoration: none;
 }

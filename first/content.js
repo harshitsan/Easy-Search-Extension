@@ -1,8 +1,30 @@
 
 let div = document.createElement("div");//div to render
-div.id = "suggestion-div";
+div.id = "hb-suggestion-div";
 div.style.display="none";
 let input = document.querySelectorAll('input');//nodelist of inputs on page
+
+function deleteElement(theValue)
+{
+  if (!theValue) {
+    console.log('Error: No value specified');
+    return;
+  }
+
+  //to delete previous values in div
+    chrome.storage.sync.get(['value'], function(e) {
+    let prev = e.value?JSON.parse(e.value):[];
+    // console.log(prev);
+    let i = prev.indexOf(theValue);
+    prev.splice(i,1);
+    // prev.push(theValue);
+    console.log(prev);
+    chrome.storage.sync.set({'value': JSON.stringify(prev)}, function() {
+      // Notify that we saved.
+      console.log('Data saved');
+    });
+  });
+}
 
 document.addEventListener("click", function(event){//to hide div when clicked on page
 let found = false;
@@ -16,22 +38,32 @@ else
   div.style.display = div.style.display=="block"?"none":"none";
 
 });
-function removeElement()
-{
-  console.log("remove");
-}
 function addParaInDiv(value,afterElement){//insert Elements in div
-  let insideDiv = document.createElement("div");
-  // let link = document.createElement("a");
-  // link.textContent="X";
-  // link.onclick = removeElement();
-  insideDiv.textContent = value;
-  // insideDiv.append(link);
-  div.append(insideDiv);
-  insideDiv.addEventListener("click",function(){
-    afterElement.value = insideDiv.textContent;
+let childDiv =document.createElement("div");
+  let insideDiv1 = document.createElement("div");
+  insideDiv1.id = "hb-data";
+
+  let insideDiv2 = document.createElement("div");
+  insideDiv2.id = "hb-remove";
+
+  let link = document.createElement("a");
+  link.textContent="X";
+
+  insideDiv2.addEventListener("click",function(){
+    deleteElement(value);
+  })
+
+  insideDiv1.textContent = value;
+  insideDiv2.append(link);
+
+  childDiv.append(insideDiv1);
+  childDiv.append(insideDiv2);
+  div.append(childDiv);
+  insideDiv1.addEventListener("click",function(){
+    afterElement.value = insideDiv1.textContent;
   })
 }
+
 if(input){
   for(let i in input)
   {
@@ -40,7 +72,7 @@ if(input){
     input[i].addEventListener("click", function(){
       // console.log(div);
       while (div.firstChild) {
-        div.removeChild(div.firstChild);
+        div.removeChild(div.firstChild);//to empty the suggestion-div
       }
       console.log(this.value);
       this.after(div);
@@ -60,7 +92,7 @@ if(input){
 //hide div on clicking somewhere else
 //     document.onclick = function(e){
 //       console.log(e);
-//        if(e.target.id != 'suggestion-div'){
+//        if(e.target.id != 'hb-suggestion-div'){
 //           // if(div.style.display == "block")
 //           //   {div.style.display = 'none'}
 //           // else {
